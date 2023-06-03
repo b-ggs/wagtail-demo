@@ -92,4 +92,4 @@ jobs:
         run: poetry run python3 manage.py collectstatic --noinput
 
       - name: Run tests
-        run: poetry run python3 manage.py test --settings=django_template.settings.test -v=2
+        run: poetry run python3 manage.py test --settings=wagtail_demo.settings.test -v=2

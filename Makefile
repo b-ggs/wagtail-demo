@@ -28,16 +28,16 @@ sh:
 	@echo ""
 	@echo "Several bash aliases exist in this container such as:"
 	@echo "  - \`dj\` - \`./manage.py\`"
-	@echo "  - \`djtest\` - \`./manage.py test --settings=django_template.settings.test -v=2\`"
-	@echo "  - \`djtestkeepdb\` - \`./manage.py test --settings=django_template.settings.test -v=2 --keepdb\`"
+	@echo "  - \`djtest\` - \`./manage.py test --settings=wagtail_demo.settings.test -v=2\`"
+	@echo "  - \`djtestkeepdb\` - \`./manage.py test --settings=wagtail_demo.settings.test -v=2 --keepdb\`"
 	@echo ""
 	docker compose exec web bash
 
 test:
-	docker compose exec web python3 manage.py test --settings=django_template.settings.test -v=2
+	docker compose exec web python3 manage.py test --settings=wagtail_demo.settings.test -v=2
 
 test-keepdb:
-	docker compose exec web python3 manage.py test --settings=django_template.settings.test -v=2 --keepdb
+	docker compose exec web python3 manage.py test --settings=wagtail_demo.settings.test -v=2 --keepdb
 
 bump-deps:
 	docker compose run --rm --no-deps web poetry up --latest
@@ -60,22 +60,22 @@ rename:
 	@echo ""
 	@echo "This Makefile target will:"
 	@echo "1.) Replace all instances of the following in files and folders:"
-	@echo "  - \`django_template\` with \`$(PROJECT_NAME)\`"
-	@echo "  - \`django-template\` with \`$(PROJECT_NAME_KEBAB)\`"
+	@echo "  - \`wagtail_demo\` with \`$(PROJECT_NAME)\`"
+	@echo "  - \`wagtail-demo\` with \`$(PROJECT_NAME_KEBAB)\`"
 	@echo ""
 	@echo "Proceeding in 10 seconds..."
 	@echo ""
 
 	@sleep 10
 
-	@# Rename the django_template directory
-	mv django_template $(PROJECT_NAME)
+	@# Rename the wagtail_demo directory
+	mv wagtail_demo $(PROJECT_NAME)
 
-	@# Replace all instances of django_template with PROJECT_NAME
-	grep -rl django_template . | xargs perl -i -pe "s/django_template/$(PROJECT_NAME)/g"
+	@# Replace all instances of wagtail_demo with PROJECT_NAME
+	grep -rl wagtail_demo . | xargs perl -i -pe "s/wagtail_demo/$(PROJECT_NAME)/g"
 
-	@# Replace all instances of django-template with PROJECT_NAME_KEBAB
-	grep -rl django-template . | xargs perl -i -pe "s/django-template/$(PROJECT_NAME_KEBAB)/g"
+	@# Replace all instances of wagtail-demo with PROJECT_NAME_KEBAB
+	grep -rl wagtail-demo . | xargs perl -i -pe "s/wagtail-demo/$(PROJECT_NAME_KEBAB)/g"
 
 	@# Reset git index
 	rm .git/index

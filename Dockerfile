@@ -6,18 +6,18 @@
 FROM python:3.11-bullseye AS base
 
 # Set up unprivileged user
-RUN useradd --create-home django_template
+RUN useradd --create-home wagtail_demo
 
 # Set up project directory
 ENV APP_DIR=/app
 RUN mkdir -p "$APP_DIR" \
-  && chown -R django_template "$APP_DIR"
+  && chown -R wagtail_demo "$APP_DIR"
 
 # Set up virtualenv
 ENV VIRTUAL_ENV=/venv
 ENV PATH=$VIRTUAL_ENV/bin:$PATH
 RUN mkdir -p "$VIRTUAL_ENV" \
-  && chown -R django_template:django_template "$VIRTUAL_ENV"
+  && chown -R wagtail_demo:wagtail_demo "$VIRTUAL_ENV"
 
 # Install Poetry
 # Make sure Poetry version is in sync with CI configs
@@ -25,10 +25,10 @@ ENV POETRY_VERSION=1.5.1
 ENV POETRY_HOME=/opt/poetry
 ENV PATH=$POETRY_HOME/bin:$PATH
 RUN curl -sSL https://install.python-poetry.org | python3 - \
-    && chown -R django_template:django_template "$POETRY_HOME"
+    && chown -R wagtail_demo:wagtail_demo "$POETRY_HOME"
 
 # Switch to unprivileged user
-USER django_template
+USER wagtail_demo
 
 # Switch to project directory
 WORKDIR $APP_DIR
@@ -42,7 +42,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 # Install main project dependencies
 RUN python3 -m venv $VIRTUAL_ENV
-COPY --chown=django_template pyproject.toml poetry.lock ./
+COPY --chown=wagtail_demo pyproject.toml poetry.lock ./
 RUN pip install --upgrade pip \
   && poetry install --no-root --only main
 
@@ -50,7 +50,7 @@ RUN pip install --upgrade pip \
 EXPOSE 8000
 
 # Serve project with gunicorn
-CMD ["gunicorn", "django_template.wsgi:application"]
+CMD ["gunicorn", "wagtail_demo.wsgi:application"]
 
 ##########################
 # Production build stage #
@@ -60,7 +60,7 @@ FROM base AS production
 
 # Copy the project files
 # Ensure that this is one of the last commands for better layer caching
-COPY --chown=django_template:django_template . .
+COPY --chown=wagtail_demo:wagtail_demo . .
 
 # Collect static files
 RUN SECRET_KEY=dummy python3 manage.py collectstatic --noinput --clear
@@ -83,7 +83,7 @@ RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main"
   && rm -rf /var/lib/apt/lists/*
 
 # Switch back to unprivileged user
-USER django_template
+USER wagtail_demo
 
 # Install all project dependencies
 RUN poetry install --no-root
@@ -94,12 +94,12 @@ RUN poetry self add poetry-plugin-up
 # Add bash aliases
 RUN echo "alias dj='./manage.py'" >> $HOME/.bash_aliases
 RUN echo "alias djrun='./manage.py runserver 0:8000'" >> $HOME/.bash_aliases
-RUN echo "alias djtest='./manage.py test --settings=django_template.settings.test -v=2'" >> $HOME/.bash_aliases
-RUN echo "alias djtestkeepdb='./manage.py test --settings=django_template.settings.test -v=2 --keepdb'" >> $HOME/.bash_aliases
+RUN echo "alias djtest='./manage.py test --settings=wagtail_demo.settings.test -v=2'" >> $HOME/.bash_aliases
+RUN echo "alias djtestkeepdb='./manage.py test --settings=wagtail_demo.settings.test -v=2 --keepdb'" >> $HOME/.bash_aliases
 
 # Copy the project files
 # Ensure that this is one of the last commands for better layer caching
-COPY --chown=django_template:django_template . .
+COPY --chown=wagtail_demo:wagtail_demo . .
 
 # Collect static files
 RUN SECRET_KEY=dummy python3 manage.py collectstatic --noinput --clear

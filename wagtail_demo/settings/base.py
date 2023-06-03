@@ -26,9 +26,9 @@ else:
 
 INSTALLED_APPS = [
     # Project apps
-    "django_template.home",
-    "django_template.utils",
-    "django_template.users",
+    "wagtail_demo.home",
+    "wagtail_demo.utils",
+    "wagtail_demo.users",
     # Third-party apps
     "django_extensions",
     # Django core apps
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
-ROOT_URLCONF = "django_template.urls"
+ROOT_URLCONF = "wagtail_demo.urls"
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "django_template.wsgi.application"
+WSGI_APPLICATION = "wagtail_demo.wsgi.application"
 
 
 # Database
@@ -94,7 +94,7 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "false").lower() == "true"
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "false").lower() == "true"
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "django_template@localhost")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "wagtail_demo@localhost")
 
 
 # Internationalization and localization
