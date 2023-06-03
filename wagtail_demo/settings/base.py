@@ -31,7 +31,20 @@ INSTALLED_APPS = [
     "wagtail_demo.users",
     # Third-party apps
     "django_extensions",
+    # Wagtail core apps
+    "wagtail.contrib.forms",
+    "wagtail.contrib.redirects",
+    "wagtail.embeds",
+    "wagtail.sites",
+    "wagtail.users",
+    "wagtail.snippets",
+    "wagtail.documents",
+    "wagtail.images",
+    "wagtail.search",
+    "wagtail.admin",
     "wagtail",
+    "modelcluster",
+    "taggit",
     # Django core apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -42,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -161,6 +175,12 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 
+# Media files (e.g. user-uploaded files)
+# https://docs.djangoproject.com/en/4.2/topics/files/
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
 # Simplified static file serving
 # https://devcenter.heroku.com/articles/django-assets
 # https://warehouse.python.org/project/whitenoise/
@@ -197,6 +217,10 @@ LOGGING = {
         "level": "INFO",
     },
 }
+
+# Wagtail settings
+
+WAGTAIL_SITE_NAME = "wagtail_demo"
 
 # Error reporting
 # https://docs.sentry.io/platforms/python/guides/django/

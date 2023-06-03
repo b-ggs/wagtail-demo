@@ -3,5 +3,6 @@ __pycache__
 .python-version
 **.dump
 wagtail_demo/staticfiles
+wagtail_demo/media
 
 node_modules
