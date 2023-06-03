@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "wagtail_demo.users",
     # Third-party apps
     "django_extensions",
+    "wagtail",
     # Django core apps
     "django.contrib.admin",
     "django.contrib.auth",
